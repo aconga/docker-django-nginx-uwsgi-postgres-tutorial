@@ -17,7 +17,7 @@ pipeline {
     }
 }
 
-node('production') {
+node('test') {
     stage('Poll') {
         checkout scm
     }
