@@ -1,21 +1,13 @@
 pipeline {
-    agent any
-    stages {
-        stage('Build') { 
-            steps {
-                echo 'Building....'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
-        }
+    stage('Checkout') {
+        checkout scm
+    }
 
-        stage('Deploy') {
-            steps {
-                echo 'Deploying'
-            }
+    stage('Environment') {
+        sh 'git --version'
+        echo "Branch: ${env.BRANCH_NAME}"
+        sh 'docker -v'
+        sh 'printenv'
         }
     }
 }
@@ -25,14 +17,17 @@ node('production') {
         checkout scm
     }
 
+    stage('Environment') {
+        sh 'git --version'
+        echo "Branch: ${env.BRANCH_NAME}"
+        sh 'docker -v'
+        sh 'printenv'
+    }
+
     stage('Build') {
         sh 'ls -a'
         sh 'docker-compose build'
     }
-
-    stage('Test') {
-        echo 'Testing..'
-        }
 
     stage('Deploy') {
         sh 'docker-compose up -d'
