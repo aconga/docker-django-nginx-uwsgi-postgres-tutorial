@@ -16,8 +16,8 @@ services:
         container_name: nginx-container        
         build: ./nginx
         restart: always
-        ports:
-        - "80:80" 
+        expose:
+        - "80"
         volumes:        
         - api_data:/docker_api        
         - ./log:/var/log/nginx              
