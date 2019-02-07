@@ -14,27 +14,18 @@ pipeline {
                 sh 'printenv'
             }
         }
-    }
-}
 
-node('test') {
-    stage('Poll') {
-        checkout scm
-    }
-
-    stage('Environment') {
-        sh 'git --version'
-        echo "Branch: ${env.BRANCH_NAME}"
-        sh 'docker -v'
-        sh 'printenv'
-    }
-
-    stage('Build') {
-        sh 'ls -a'
-        sh 'docker-compose build'
-    }
-
-    stage('Deploy') {
-        sh 'docker-compose up -d'
+        stage('Build') {
+            steps {
+                sh 'ls -a'
+                sh 'docker-compose build'
+            }
         }
+
+        stage('Deploy') {
+            steps {
+                sh 'docker-compose up -d'
+            }
+        }
+    }
 }
