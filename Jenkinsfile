@@ -18,7 +18,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'pwd'
-                sh 'docker-compose -f docker-compose.yml build'
+                sh '/usr/local/bin/docker-compose -f docker-compose.yml build'
             }
         }
 
