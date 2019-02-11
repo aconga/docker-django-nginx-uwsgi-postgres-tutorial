@@ -34,7 +34,7 @@ services:
         volumes:
         - api_data:/docker_api        
         depends_on:
-        - db
+        - thor_db
         environment:
         - DATABASE_URL=postgres://thor:thor@thor_db/thor
 
