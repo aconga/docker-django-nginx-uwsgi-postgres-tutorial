@@ -1,19 +1,18 @@
 version: '3'
 services:
 
-    db:
-      container_name: postgres
-      image: postgres
-      environment:
-        POSTGRES_PASSWORD: password123
-      ports:
-        - "5432:5432"
-        # (HOST:CONTAINER)
-      volumes:
+    thor_db:
+        container_name: postgres-$JOB_NAME
+        image: postgres
+        environment:
+        - POSTGRES_PASSWORD=thor
+        - POSTGRES_USER=thor
+        - POSTGRES_DB=thor
+        volumes:
         - pgdata:/var/lib/postgresql/data/
 
     nginx:
-        container_name: nginx-container        
+        container_name: nginx-$JOB_NAME        
         build: ./nginx
         restart: always
         expose:
@@ -25,7 +24,7 @@ services:
         - api
         
     api:
-        container_name: api-container
+        container_name: api-$JOB_NAME
         build: ./api        
         restart: always
         # command: uwsgi  --emperor uwsgi.ini         
@@ -36,6 +35,8 @@ services:
         - api_data:/docker_api        
         depends_on:
         - db
+        environment:
+        - DATABASE_URL=postgres://thor:thor@thor_db/thor
 
 volumes:
     api_data:
