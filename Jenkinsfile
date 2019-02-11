@@ -11,7 +11,7 @@ pipeline {
                 sh 'git --version'
                 echo "Branch: ${env.BRANCH_NAME}"
                 sh 'docker -v'
-                sh 'printenv'
+                echo "Variable Entorno: ${JOB_NAME}"
             }
         }
 
