@@ -10,6 +10,8 @@ services:
         - POSTGRES_DB=thor
         volumes:
         - pgdata:/var/lib/postgresql/data/
+        networks:
+        - database1_network
 
     nginx:
         container_name: nginx-$JOB_NAME        
@@ -22,6 +24,8 @@ services:
         - ./log:/var/log/nginx              
         depends_on:
         - api
+        networks:
+        - nginx_network
         
     api:
         container_name: api-$JOB_NAME
@@ -29,14 +33,23 @@ services:
         restart: always
         # command: uwsgi  --emperor uwsgi.ini         
         command: uwsgi --ini uwsgi.ini         
-        ports:
-        - "8002:8000"
+        expose:
+        - "8000"
         volumes:
         - api_data:/docker_api        
         depends_on:
         - thor_db
         environment:
         - DATABASE_URL=postgres://thor:thor@thor_db/thor
+        networks:
+        - nginx_network
+        - database1_network
+
+networks:
+  nginx_network:
+    driver: bridge
+  database1_network:
+    driver: bridge
 
 volumes:
     api_data:
