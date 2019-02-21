@@ -2,7 +2,7 @@ version: '3'
 services:
 
     thor_db:
-        container_name: postgres-$JOB_NAME
+        container_name: postgres-thor_db
         image: postgres
         environment:
         - POSTGRES_PASSWORD=thor
@@ -14,7 +14,7 @@ services:
         - database1_network
 
     nginx:
-        container_name: nginx-$JOB_NAME        
+        container_name: nginx-nginx        
         build: ./nginx
         restart: always
         expose:
@@ -28,7 +28,7 @@ services:
         - nginx_network
         
     api:
-        container_name: api-$JOB_NAME
+        container_name: api-api
         build: ./api        
         restart: always
         # command: uwsgi  --emperor uwsgi.ini         
