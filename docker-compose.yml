@@ -11,7 +11,7 @@ services:
         volumes:
         - pgdata:/var/lib/postgresql/data/
         networks:
-        - $JOB_NAME_db_network
+        - db_network
 
     nginx:
         container_name: $JOB_NAME-nginx        
@@ -25,7 +25,7 @@ services:
         depends_on:
         - api
         networks:
-        - $JOB_NAME_nginx_network
+        - nginx_network
         
     api:
         container_name: $JOB_NAME-api
@@ -42,13 +42,13 @@ services:
         environment:
         - DATABASE_URL=postgres://thor:thor@thor_db/thor
         networks:
-        - $JOB_NAME_nginx_network
-        - $JOB_NAME_db_network
+        - nginx_network
+        - db_network
 
 networks:
-  $JOB_NAME_nginx_network:
+  nginx_network:
     driver: bridge
-  $JOB_NAME_db_network:
+  db_network:
     driver: bridge
 
 volumes:
